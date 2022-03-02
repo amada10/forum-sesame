@@ -22,11 +22,15 @@ ReactDOM.render(
       <Route path="/" exact component={Index} />
       
       {/* add routes with layouts */}
-      <AdminRoute exact path="/admin/TablesEntreprises" >
-        <Admin />
+      {/*admin route */}
+      <AdminRoute>
+        <Route exact path="/admin/TablesEntreprises" component={Admin} />
+        <Route exact path="/adminEntreprise/ProfilEntreprise" component={AdminEntreprise} />
       </AdminRoute>
-      <EntrepriseRoute exact path="/adminEntreprise/ProfilEntreprise">
-        <AdminEntreprise />
+
+      {/*entreprise route */}
+      <EntrepriseRoute>
+        <Route exact path="/adminEntreprise/ProfilEntreprise" component={AdminEntreprise} />
       </EntrepriseRoute>
       
       {/* add redirect for first page */}
