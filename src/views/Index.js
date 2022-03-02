@@ -5,16 +5,28 @@ import {Link} from "react-router-dom"
 import bg from '../assets/img/bg.jpg';
 
 import Login from "./auth/Login";
+import { LoginService } from "utils/service/LoginService";
 
 /*Components bouttons dashboard*/
 const Boutton = () =>{
-  return(
-    <Link to="/admin/TablesEntreprises">
+  const compte = LoginService.getCurrentCompte().type;
+  if(compte === 'ADMIN'){
+    return(
+      <Link to="/admin/TablesEntreprises">
+        <button className="w-6/12 bg-blueGray-800 text-white active:bg-lightBlue-600 font-bold uppercase text-base px-3 py-6 rounded shadow-md hover:shadow-lg outline-none focus:outline-none ml-3 ease-linear transition-all duration-150" type="button" style={{margin: '0px 60px'}}> 
+            <i className="far fa-chart-bar px-3"></i>Dashboard
+        </button>
+      </Link>
+    )
+  } else{
+    return(
+    <Link to="/adminEntreprise/ProfilEntreprise">
       <button className="w-6/12 bg-blueGray-800 text-white active:bg-lightBlue-600 font-bold uppercase text-base px-3 py-6 rounded shadow-md hover:shadow-lg outline-none focus:outline-none ml-3 ease-linear transition-all duration-150" type="button" style={{margin: '0px 60px'}}> 
           <i className="far fa-chart-bar px-3"></i>Dashboard
       </button>
     </Link>
   )
+  }
 }
 
 const AfficheForm = () => {

@@ -1,19 +1,13 @@
 import { Route,Redirect } from 'react-router-dom'
 import { LoginService } from 'utils/service/LoginService'
 
-export default function AdminRoute({component: Component, ...rest}){
+export default function AdminRoute({children, ...rest}){
     const compte = LoginService.getCurrentCompte();
     return(
-        <Route {...rest} render = {props => {
-            if(compte !== null && compte.type === 'ADMIN'){
-                return(
-                    <Component {...props} />
-                )
-            } else{
-                return(
-                    <Redirect to='/' />
-                )
-            }
+        <Route {...rest} render = {() => {
+             return compte !== null && compte.type === 'ADMIN'
+                ? children
+                : <Redirect to='/' />
         }} />
     )
 }

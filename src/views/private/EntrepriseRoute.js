@@ -1,12 +1,12 @@
 import { Route,Redirect } from 'react-router-dom'
 import { LoginService } from 'utils/service/LoginService'
 
-export default function EntrepriseRoute({component: Component, ...rest}){
+export default function EntrepriseRoute({children, ...rest}){
     const compte = LoginService.getCurrentCompte();
     return(
-        <Route {...rest} render = {props => {
+        <Route {...rest} render = {() => {
             return compte !== null && compte.type === 'ENTREPRISE' 
-            ? <Component {...props} />
+            ? children
             : <Redirect to='/' />
         }} />
     )

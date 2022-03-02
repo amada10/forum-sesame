@@ -3,9 +3,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
+import { LoginService } from "utils/service/LoginService";
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
+  const compte = LoginService.getCurrentCompte().type;
+
+
   return (
     <>
       <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -42,84 +46,86 @@ export default function Sidebar() {
               </div>
             </div>
 
-            {/* Divider */}
-            <hr className="my-4 md:min-w-full" />
+           
 
             {/* ADMIN */}
-            <div id="admin">
-              <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              Admin 
-              </h6>
-              {/* Navigation */}
+            { compte === 'ADMIN' && (
+              <div id="admin">
+                <hr className="my-4 md:min-w-full" />
+                <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                Admin 
+                </h6>
+                {/* Navigation */}
 
-              <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-                <li className="items-center">
-                  <Link
-                    className={
-                      "text-xs uppercase py-3 font-bold block " +
-                      (window.location.href.indexOf("/admin/TablesEntreprises") !== -1
-                        ? "text-teal-500 hover:text-teal-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/TablesEntreprises"
-                  >
-                    <i
+                <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+                  <li className="items-center">
+                    <Link
                       className={
-                        "fas fa-table mr-2 text-sm " +
+                        "text-xs uppercase py-3 font-bold block " +
                         (window.location.href.indexOf("/admin/TablesEntreprises") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
+                          ? "text-teal-500 hover:text-teal-600"
+                          : "text-blueGray-700 hover:text-blueGray-500")
                       }
-                    ></i>{" "}
-                    Liste entreprise
-                  </Link>
-                </li>
+                      to="/admin/TablesEntreprises"
+                    >
+                      <i
+                        className={
+                          "fas fa-table mr-2 text-sm " +
+                          (window.location.href.indexOf("/admin/TablesEntreprises") !== -1
+                            ? "opacity-75"
+                            : "text-blueGray-300")
+                        }
+                      ></i>{" "}
+                      Liste entreprise
+                    </Link>
+                  </li>
 
-                <li className="items-center">
-                  <Link
-                    className={
-                      "text-xs uppercase py-3 font-bold block " +
-                      (window.location.href.indexOf("/admin/AddEntreprise") !== -1
-                        ? "text-teal-500 hover:text-teal-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/AddEntreprise"
-                  >
-                    <i
+                  <li className="items-center">
+                    <Link
                       className={
-                        "fas fa-tools mr-2 text-sm " +
+                        "text-xs uppercase py-3 font-bold block " +
                         (window.location.href.indexOf("/admin/AddEntreprise") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
+                          ? "text-teal-500 hover:text-teal-600"
+                          : "text-blueGray-700 hover:text-blueGray-500")
                       }
-                    ></i>{" "}
-                    Ajouter entreprise
-                  </Link>
-                </li>
+                      to="/admin/AddEntreprise"
+                    >
+                      <i
+                        className={
+                          "fas fa-tools mr-2 text-sm " +
+                          (window.location.href.indexOf("/admin/AddEntreprise") !== -1
+                            ? "opacity-75"
+                            : "text-blueGray-300")
+                        }
+                      ></i>{" "}
+                      Ajouter entreprise
+                    </Link>
+                  </li>
 
-                <li className="items-center">
-                  <Link
-                    className={
-                      "text-xs uppercase py-3 font-bold block " +
-                      (window.location.href.indexOf("/admin/AddFicheMetier") !== -1
-                        ? "text-teal-500 hover:text-teal-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/AddFicheMetier"
-                  >
-                    <i
+                  <li className="items-center">
+                    <Link
                       className={
-                        "fas fa-tools mr-2 text-sm " +
+                        "text-xs uppercase py-3 font-bold block " +
                         (window.location.href.indexOf("/admin/AddFicheMetier") !== -1
-                          ? "opacity-75"
-                          : "text-blueGray-300")
+                          ? "text-teal-500 hover:text-teal-600"
+                          : "text-blueGray-700 hover:text-blueGray-500")
                       }
-                    ></i>{" "}
-                    Ajouter fiche métier
-                  </Link>
-                </li>
-              </ul>
-            </div>
+                      to="/admin/AddFicheMetier"
+                    >
+                      <i
+                        className={
+                          "fas fa-tools mr-2 text-sm " +
+                          (window.location.href.indexOf("/admin/AddFicheMetier") !== -1
+                            ? "opacity-75"
+                            : "text-blueGray-300")
+                        }
+                      ></i>{" "}
+                      Ajouter fiche métier
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
 
             {/* Divider */}
             <hr className="my-4 md:min-w-full" />
