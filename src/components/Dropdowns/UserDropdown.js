@@ -4,7 +4,6 @@ import { createPopper } from "@popperjs/core";
 import {LoginService} from "utils/service/LoginService";
 
 const UserDropdown = () => {
-  const Compte = LoginService.getCurrentCompte();
   const Deconnexion = () => {
     LoginService.logout();
   }

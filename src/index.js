@@ -10,11 +10,23 @@ import AdminRoute from "views/private/AdminRoute";
 import EntrepriseRoute from "views/private/EntrepriseRoute";
 
 // layouts
-import Admin from "layouts/Admin.js";
-import AdminEntreprise from "layouts/AdminEntreprise.js";
+import CardEditProfile from "components/Cards/CardEditProfile";
+import TablesEntreprises from "views/admin/TablesEntreprises.js";
 
-// views without layouts
+
+// views without 
 import Index from "views/Index.js";
+
+//views admin
+import AddEntreprise from "views/admin/AddEntreprise.js";
+import AddFicheMetier from "views/admin/AddFicheMetier";
+
+//views entreprise
+import ProfilEntreprise from "views/admin-entreprise/ProfilEntreprise.js";
+import Statistiques from "views/admin-entreprise/Statistiques.js"
+import AllContenu from "views/admin-entreprise/AllContenu.js";
+import AddContenu from "views/admin-entreprise/AddContenu.js";
+
 
 ReactDOM.render(
   <BrowserRouter>
@@ -22,16 +34,36 @@ ReactDOM.render(
       <Route path="/" exact component={Index} />
       
       {/* add routes with layouts */}
-      {/*admin route */}
-      <AdminRoute>
-        <Route exact path="/admin/TablesEntreprises" component={Admin} />
-        <Route exact path="/adminEntreprise/ProfilEntreprise" component={AdminEntreprise} />
-      </AdminRoute>
-
       {/*entreprise route */}
-      <EntrepriseRoute>
-        <Route exact path="/adminEntreprise/ProfilEntreprise" component={AdminEntreprise} />
-      </EntrepriseRoute>
+       <EntrepriseRoute path="/adminEntreprise/Statistiques" exact>
+          <Statistiques />
+        </EntrepriseRoute>
+        <EntrepriseRoute path="/adminEntreprise/AllContenu" exact >
+          <AllContenu />
+        </EntrepriseRoute>
+        <EntrepriseRoute path="/adminEntreprise/AddContenu" exact >
+          <AddContenu />
+        </EntrepriseRoute>
+        <EntrepriseRoute path="/adminEntreprise/ProfilEntreprise" exact>
+          <ProfilEntreprise />
+        </EntrepriseRoute>
+        <EntrepriseRoute path="/adminEntreprise/CardEditProfile" exact >
+          <CardEditProfile />
+        </EntrepriseRoute>
+
+      {/*admin route */}
+      <AdminRoute exact path="/admin/TablesEntreprises">
+        <TablesEntreprises /> 
+      </AdminRoute>
+      <AdminRoute exact path="/adminEntreprise/ProfilEntreprise">
+        <ProfilEntreprise /> 
+      </AdminRoute>
+      <AdminRoute exact path="/admin/AddEntreprise">
+        <AddEntreprise /> 
+      </AdminRoute>
+      <AdminRoute exact path="/admin/AddFicheMetier">
+        <AddFicheMetier /> 
+      </AdminRoute>
       
       {/* add redirect for first page */}
       <Redirect from="*" to="/" />

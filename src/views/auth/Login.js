@@ -30,10 +30,11 @@ export default function Login() {
         try {
             LoginService.login(data.email, data.password).then(
                 (response) => {
-                  if(response.type === 'ADMIN'){
+                  if(response.type === 'ENTREPRISE'){
+                     history.push('/adminEntreprise/ProfilEntreprise');
+                  }
+                  else if(response.type === 'ADMIN'){
                     history.push('/admin/TablesEntreprises');
-                  } else if(response.type === 'ENTREPRISE'){
-                    history.push('/adminEntreprise/ProfilEntreprise');
                   } else{
                     setErreur(true);
                     setErrorMessage("Email ou mot de passe incorrecte!");

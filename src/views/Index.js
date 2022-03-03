@@ -18,7 +18,7 @@ const Boutton = () =>{
         </button>
       </Link>
     )
-  } else{
+  } else if (compte === 'ENTREPRISE'){
     return(
     <Link to="/adminEntreprise/ProfilEntreprise">
       <button className="w-6/12 bg-blueGray-800 text-white active:bg-lightBlue-600 font-bold uppercase text-base px-3 py-6 rounded shadow-md hover:shadow-lg outline-none focus:outline-none ml-3 ease-linear transition-all duration-150" type="button" style={{margin: '0px 60px'}}> 
