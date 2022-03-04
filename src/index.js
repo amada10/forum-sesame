@@ -27,6 +27,7 @@ import AddFicheMetier from "views/admin/AddFicheMetier";
 
 //views entreprise
 import ProfilEntreprise from "views/admin-entreprise/ProfilEntreprise.js";
+import CardOtherProfil from "components/Cards/CardOtherProfil";
 import Statistiques from "views/admin-entreprise/Statistiques.js"
 import AllContenu from "views/admin-entreprise/AllContenu.js";
 import AddContenu from "views/admin-entreprise/AddContenu.js";
@@ -53,7 +54,7 @@ ReactDOM.render(
           <EntrepriseRoute path="/adminEntreprise/ProfilEntreprise" exact>
             <ProfilEntreprise />
           </EntrepriseRoute>
-          <EntrepriseRoute path="/adminEntreprise/CardEditProfile" exact >
+          <EntrepriseRoute path="/adminEntreprise/CardEditProfile/" exact >
             <CardEditProfile />
           </EntrepriseRoute>
 
@@ -63,6 +64,9 @@ ReactDOM.render(
             </AdminRoute>
             <AdminRoute exact path="/adminEntreprise/ProfilEntreprise">
               <ProfilEntreprise /> 
+            </AdminRoute>
+            <AdminRoute exact path="/admin/ProfilEntrprise/:id">
+              <CardOtherProfil />
             </AdminRoute>
             <AdminRoute exact path="/admin/AddEntreprise">
               <AddEntreprise /> 
