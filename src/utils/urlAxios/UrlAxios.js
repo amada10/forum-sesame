@@ -1,9 +1,9 @@
 import Axios from 'axios';
 
-const LoginAxios = Axios.create({
-    baseURL: "http://localhost:5000/api/v1" /*route login endpoint '/login' */
+const RouteAxios = Axios.create({
+    baseURL: "http://localhost:5000/api/v1" /*route v1 with endpoin '/login' && 'add_account' */
 })
 
 export {
-    LoginAxios
+    RouteAxios
 }

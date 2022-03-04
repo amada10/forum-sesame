@@ -1,7 +1,7 @@
-import { LoginAxios } from "utils/urlAxios/UrlAxios";
+import { RouteAxios } from "utils/urlAxios/UrlAxios";
 
 function login(email, password){
-    return LoginAxios.post("/login",{
+    return RouteAxios.post("/login",{
         email, password
     })
     .then((response) => {

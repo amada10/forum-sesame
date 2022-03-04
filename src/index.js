@@ -5,6 +5,9 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/styles/tailwind.css";
 
+//contexte
+import { CompteContextProvider } from "utils/contexte/CompteContext";
+
 // private
 import AdminRoute from "views/private/AdminRoute";
 import EntrepriseRoute from "views/private/EntrepriseRoute";
@@ -30,46 +33,48 @@ import AddContenu from "views/admin-entreprise/AddContenu.js";
 
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/" exact component={Index} />
-      <Route path="/error" exact component={Erreur} />
-      
-      {/* add routes with layouts */}
-      {/*entreprise route */}
-      <EntrepriseRoute path="/adminEntreprise/Statistiques" exact>
-        <Statistiques />
-      </EntrepriseRoute>
-      <EntrepriseRoute path="/adminEntreprise/AllContenu" exact >
-        <AllContenu />
-      </EntrepriseRoute>
-      <EntrepriseRoute path="/adminEntreprise/AddContenu" exact >
-        <AddContenu />
-      </EntrepriseRoute>
-      <EntrepriseRoute path="/adminEntreprise/ProfilEntreprise" exact>
-        <ProfilEntreprise />
-      </EntrepriseRoute>
-      <EntrepriseRoute path="/adminEntreprise/CardEditProfile" exact >
-        <CardEditProfile />
-      </EntrepriseRoute>
+    <CompteContextProvider>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" exact component={Index} />
+          <Route path="/error" exact component={Erreur} />
+          
+          {/* add routes with layouts */}
+          {/*entreprise route */}
+          <EntrepriseRoute path="/adminEntreprise/Statistiques" exact>
+            <Statistiques />
+          </EntrepriseRoute>
+          <EntrepriseRoute path="/adminEntreprise/AllContenu" exact >
+            <AllContenu />
+          </EntrepriseRoute>
+          <EntrepriseRoute path="/adminEntreprise/AddContenu" exact >
+            <AddContenu />
+          </EntrepriseRoute>
+          <EntrepriseRoute path="/adminEntreprise/ProfilEntreprise" exact>
+            <ProfilEntreprise />
+          </EntrepriseRoute>
+          <EntrepriseRoute path="/adminEntreprise/CardEditProfile" exact >
+            <CardEditProfile />
+          </EntrepriseRoute>
 
-      {/*admin route */}
-      <AdminRoute exact path="/admin/TablesEntreprises">
-        <TablesEntreprises /> 
-      </AdminRoute>
-      <AdminRoute exact path="/adminEntreprise/ProfilEntreprise">
-        <ProfilEntreprise /> 
-      </AdminRoute>
-      <AdminRoute exact path="/admin/AddEntreprise">
-        <AddEntreprise /> 
-      </AdminRoute>
-      <AdminRoute exact path="/admin/AddFicheMetier">
-        <AddFicheMetier /> 
-      </AdminRoute>
-      
-      {/* add redirect for first page */}
-      <Redirect from="*" to="/error" />
-    </Switch>
-  </BrowserRouter>,
+          {/*admin route */}
+            <AdminRoute exact path="/admin/TablesEntreprises">
+              <TablesEntreprises /> 
+            </AdminRoute>
+            <AdminRoute exact path="/adminEntreprise/ProfilEntreprise">
+              <ProfilEntreprise /> 
+            </AdminRoute>
+            <AdminRoute exact path="/admin/AddEntreprise">
+              <AddEntreprise /> 
+            </AdminRoute>
+            <AdminRoute exact path="/admin/AddFicheMetier">
+              <AddFicheMetier /> 
+            </AdminRoute>
+          
+          {/* add redirect for first page */}
+          <Redirect from="*" to="/error" />
+        </Switch>
+      </BrowserRouter>
+    </CompteContextProvider>,
   document.getElementById("root")
 );
