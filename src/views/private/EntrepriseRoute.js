@@ -1,5 +1,5 @@
 import { Route,Redirect } from 'react-router-dom'
-import { LoginService } from 'utils/service/LoginService'
+import { LoginService } from 'utils/service/LoginService';
 
 //header, footer, navbar
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
@@ -20,8 +20,8 @@ export default function EntrepriseRoute({children, ...rest}){
                 <Route {...rest} render = {() => {
                     return compte !== null
                     ? children
-                    : <Redirect to='/' />
-            }} />o
+                    : <Redirect to='/error' />
+            }} />
             <FooterAdmin />
             </div>
         </div>

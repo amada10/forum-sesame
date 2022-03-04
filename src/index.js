@@ -16,6 +16,7 @@ import TablesEntreprises from "views/admin/TablesEntreprises.js";
 
 // views without 
 import Index from "views/Index.js";
+import Erreur from "views/Erreur.js";
 
 //views admin
 import AddEntreprise from "views/admin/AddEntreprise.js";
@@ -32,24 +33,25 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/" exact component={Index} />
+      <Route path="/error" exact component={Erreur} />
       
       {/* add routes with layouts */}
       {/*entreprise route */}
-       <EntrepriseRoute path="/adminEntreprise/Statistiques" exact>
-          <Statistiques />
-        </EntrepriseRoute>
-        <EntrepriseRoute path="/adminEntreprise/AllContenu" exact >
-          <AllContenu />
-        </EntrepriseRoute>
-        <EntrepriseRoute path="/adminEntreprise/AddContenu" exact >
-          <AddContenu />
-        </EntrepriseRoute>
-        <EntrepriseRoute path="/adminEntreprise/ProfilEntreprise" exact>
-          <ProfilEntreprise />
-        </EntrepriseRoute>
-        <EntrepriseRoute path="/adminEntreprise/CardEditProfile" exact >
-          <CardEditProfile />
-        </EntrepriseRoute>
+      <EntrepriseRoute path="/adminEntreprise/Statistiques" exact>
+        <Statistiques />
+      </EntrepriseRoute>
+      <EntrepriseRoute path="/adminEntreprise/AllContenu" exact >
+        <AllContenu />
+      </EntrepriseRoute>
+      <EntrepriseRoute path="/adminEntreprise/AddContenu" exact >
+        <AddContenu />
+      </EntrepriseRoute>
+      <EntrepriseRoute path="/adminEntreprise/ProfilEntreprise" exact>
+        <ProfilEntreprise />
+      </EntrepriseRoute>
+      <EntrepriseRoute path="/adminEntreprise/CardEditProfile" exact >
+        <CardEditProfile />
+      </EntrepriseRoute>
 
       {/*admin route */}
       <AdminRoute exact path="/admin/TablesEntreprises">
@@ -66,7 +68,7 @@ ReactDOM.render(
       </AdminRoute>
       
       {/* add redirect for first page */}
-      <Redirect from="*" to="/" />
+      <Redirect from="*" to="/error" />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
