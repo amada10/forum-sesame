@@ -1,11 +1,6 @@
 import { RouteAxios } from "utils/urlAxios/UrlAxios";
 import {LoginService} from "utils/service/LoginService";
 
-const token = LoginService.getCurrentCompte().token;
-const headers = {
-    'Authorization': `Bearer ${token}`
-}
-
 class CompteService{
     AddAccount(nom, email, tel, domaine, lien, type, password, adresse){
         return RouteAxios.post('/add_account', {
@@ -18,7 +13,9 @@ class CompteService{
             password, 
             adresse
         }, {
-            headers: headers
+            headers: {
+                'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
+            }
         }
         )
     }
@@ -27,6 +24,26 @@ class CompteService{
             return response;
         })
     }*/
+
+    AddContenu(titre, description, type, file){
+        return RouteAxios.post('/add_content', {
+            titre,
+            description,
+            type,
+            file
+        },{
+            headers: {
+                'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
+            }
+        })
+    }
+
+    /*getAllContenu(){
+        return RouteAxios.get("/all").then(response =>{
+            return response;
+        })
+    }*/
+
 }
 
 export default new CompteService();

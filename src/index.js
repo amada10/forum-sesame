@@ -7,6 +7,7 @@ import "assets/styles/tailwind.css";
 
 //contexte
 import { CompteContextProvider } from "utils/contexte/CompteContext";
+import { ContenuContexteProvider } from "utils/contexte/ContenuContexte";
 
 // private
 import AdminRoute from "views/private/AdminRoute";
@@ -34,51 +35,53 @@ import AddContenu from "views/admin-entreprise/AddContenu.js";
 
 
 ReactDOM.render(
-    <CompteContextProvider>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact component={Index} />
-          <Route path="/error" exact component={Erreur} />
-          
-          {/* add routes with layouts */}
-          {/*entreprise route */}
-          <EntrepriseRoute path="/adminEntreprise/Statistiques" exact>
-            <Statistiques />
-          </EntrepriseRoute>
-          <EntrepriseRoute path="/adminEntreprise/AllContenu" exact >
-            <AllContenu />
-          </EntrepriseRoute>
-          <EntrepriseRoute path="/adminEntreprise/AddContenu" exact >
-            <AddContenu />
-          </EntrepriseRoute>
-          <EntrepriseRoute path="/adminEntreprise/ProfilEntreprise" exact>
-            <ProfilEntreprise />
-          </EntrepriseRoute>
-          <EntrepriseRoute path="/adminEntreprise/CardEditProfile/" exact >
-            <CardEditProfile />
-          </EntrepriseRoute>
+    <ContenuContexteProvider>
+      <CompteContextProvider>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" exact component={Index} />
+            <Route path="/error" exact component={Erreur} />
+            
+            {/* add routes with layouts */}
+            {/*entreprise route */}
+            <EntrepriseRoute path="/adminEntreprise/Statistiques" exact>
+              <Statistiques />
+            </EntrepriseRoute>
+            <EntrepriseRoute path="/adminEntreprise/AllContenu" exact >
+              <AllContenu />
+            </EntrepriseRoute>
+            <EntrepriseRoute path="/adminEntreprise/AddContenu" exact >
+              <AddContenu />
+            </EntrepriseRoute>
+            <EntrepriseRoute path="/adminEntreprise/ProfilEntreprise" exact>
+              <ProfilEntreprise />
+            </EntrepriseRoute>
+            <EntrepriseRoute path="/adminEntreprise/CardEditProfile/" exact >
+              <CardEditProfile />
+            </EntrepriseRoute>
 
-          {/*admin route */}
-            <AdminRoute exact path="/admin/TablesEntreprises">
-              <TablesEntreprises /> 
-            </AdminRoute>
-            <AdminRoute exact path="/adminEntreprise/ProfilEntreprise">
-              <ProfilEntreprise /> 
-            </AdminRoute>
-            <AdminRoute exact path="/admin/ProfilEntrprise/:id">
-              <CardOtherProfil />
-            </AdminRoute>
-            <AdminRoute exact path="/admin/AddEntreprise">
-              <AddEntreprise /> 
-            </AdminRoute>
-            <AdminRoute exact path="/admin/AddFicheMetier">
-              <AddFicheMetier /> 
-            </AdminRoute>
-          
-          {/* add redirect for first page */}
-          <Redirect from="*" to="/error" />
-        </Switch>
-      </BrowserRouter>
-    </CompteContextProvider>,
+            {/*admin route */}
+              <AdminRoute exact path="/admin/TablesEntreprises">
+                <TablesEntreprises /> 
+              </AdminRoute>
+              <AdminRoute exact path="/adminEntreprise/ProfilEntreprise">
+                <ProfilEntreprise /> 
+              </AdminRoute>
+              <AdminRoute exact path="/admin/ProfilEntrprise/:id">
+                <CardOtherProfil />
+              </AdminRoute>
+              <AdminRoute exact path="/admin/AddEntreprise">
+                <AddEntreprise /> 
+              </AdminRoute>
+              <AdminRoute exact path="/admin/AddFicheMetier">
+                <AddFicheMetier /> 
+              </AdminRoute>
+            
+            {/* add redirect for first page */}
+            <Redirect from="*" to="/error" />
+          </Switch>
+        </BrowserRouter>
+      </CompteContextProvider>
+      </ContenuContexteProvider>,
   document.getElementById("root")
 );

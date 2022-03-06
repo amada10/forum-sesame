@@ -2,7 +2,7 @@ import React, {useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from 'yup';
-import {useHistory} from "react-router"
+import {useHistory} from "react-router";
 
 // components
 import CompteService from "utils/service/CompteService";
@@ -51,13 +51,13 @@ export default function CardAddEntreprise() {
         try {
             const newCompte = await CompteService.AddAccount(data.nom,data.email,data.tel,data.domaine,data.lien,data.type,data.password,data.adresse)
             if(compte !== null && compte.type === 'ADMIN'){
+                addCompte(newCompte.data);
                 history.push('/admin/TablesEntreprises');
                 window.location.reload();
             }else{
                 setErreur(true);
                 setErrorMessage("Echec à la registration");
             }
-            addCompte(newCompte.data);
         } catch (error) {
             setErreur(true)
             setErrorMessage(error.response.data.message)
