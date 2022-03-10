@@ -1,11 +1,10 @@
-import React, {useState, useContext } from "react";
+import React, {useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from 'yup';
 import {useHistory} from "react-router";
 
 // components
-import { ContenuContexte } from "utils/contexte/ContenuContexte";
 import CompteService from "utils/service/CompteService";
 import { LoginService } from "utils/service/LoginService";
 
@@ -15,7 +14,6 @@ export default function CardAddContenu() {
   const [errorMesssage,setErrorMessage]=useState("");
  
   let history = useHistory();
-  const {addContenu} = useContext(ContenuContexte);
 
   const validationSchema = Yup.object().shape({
         titre: Yup.string()
@@ -40,13 +38,15 @@ export default function CardAddContenu() {
         resolver: yupResolver(validationSchema)
       });
 
+
   const  handleAddContenu = async(data) => {
         try {
-            const newContenu = await CompteService.AddContenu(data.titre,data.description,data.type,data.file)
             if(compte !== null && (compte.type === 'ADMIN' || compte.type === 'ENTREPRISE')){
-                addContenu(newContenu.data);
-                history.push('/adminEntreprise/AllContenu');
-                window.location.reload();
+                if(data.file.length > 0){
+                  await CompteService.AddContenu(data.titre,data.description,data.type, data.file[0]);
+                  history.push('/adminEntreprise/AllContenu');
+                  window.location.reload();
+                }
             }else{
                 setErreur(true);
                 setErrorMessage("Echec à l'ajout du nouveau contenu");
@@ -124,12 +124,14 @@ export default function CardAddContenu() {
                     >
                       Description   <span className="lowercase">(*à remplir si le type n'est pas galerie*)</span>
                     </label>
-                    <textarea
-                      id="inpDescription"
+                    <input
+                      type="text"
                       name="description"
                       {...register('description')}
-                      className="border-0 px-3 py-4 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    > </textarea>
+                      id="inpDescription"
+                      style={{height: '100px'}}
+                      className="border-0 px-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    />
                     <p className="text-red-500 italic">{errors.description?.message}</p>
                   </div>
                 </div>

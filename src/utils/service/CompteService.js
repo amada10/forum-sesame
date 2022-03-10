@@ -14,35 +14,46 @@ class CompteService{
             adresse
         }, {
             headers: {
-                'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
+                'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`,
+                'Content-Type': 'application/json'
             }
         }
         )
     }
-    /*getAllCompte(){
-        return RouteAxios.get("/all").then(response =>{
+    getAllCompte(){
+        return RouteAxios.get("/list_accounts",  {
+                headers: {
+                    'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
+                }
+        }).then(response =>{
             return response;
         })
-    }*/
+    }
 
     AddContenu(titre, description, type, file){
-        return RouteAxios.post('/add_content', {
-            titre,
-            description,
-            type,
-            file
-        },{
+        var content = new FormData();
+
+        content.append("titre", titre);
+        content.append("description", description);
+        content.append("type", type);
+        content.append("file", file);
+
+        return RouteAxios.post('/add_content', content,{
             headers: {
                 'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
             }
         })
     }
 
-    /*getAllContenu(){
-        return RouteAxios.get("/all").then(response =>{
+    getAllContenu(){
+        return RouteAxios.get("/list_contents",  {
+                headers: {
+                    'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
+                }
+        }).then(response =>{
             return response;
         })
-    }*/
+    }
 
 }
 
