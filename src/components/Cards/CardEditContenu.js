@@ -17,24 +17,33 @@ export default function CardEditContenu() {
   const contenuCurrent = LoginService.getOneItemContexte(contenus, id);
   const [erreur, setErreur] = useState(false);
   const [errorMesssage,setErrorMessage]=useState("");
- 
+
+  //disabling description if galerie
+  let [isDisabled, setIsDisabled] = useState(false);
+  const onChangeTypeSelect = (e) => {
+      let choice = e.target.value;
+      if(choice === "galerie"){
+        setIsDisabled(true);
+      } else {
+        setIsDisabled(false)
+      }
+      
+  }
+
   let history = useHistory();
 
   const validationSchema = Yup.object().shape({
         titre: Yup.string()
           .required('Ce champ est obligatoire'),
         description: Yup.string()
-          .required("Ce champ est obligatoire si le type n'est pas galerie"),
+          .max(2000, "La description doit être inférieur à 2000 caractères")
+          .nullable(true),
         type: Yup.string()
           .required('Ce champ est obligatoire'),
         content_id: Yup.number(),
         file: Yup.mixed()
-          .test('required', "N'oubliez pas votre fichier, c'est obligatoire", (value) => {
-            return value && value.length;
-          })
-          .test('fileSize', "Le fichier est trop gros", (value) => {
-            return value && value[0] && value[0].size <= 500000000;
-          })
+        .nullable()
+        .notRequired()
       });
       const {
         register,
@@ -48,12 +57,10 @@ export default function CardEditContenu() {
   const  handleEditContenu = async(data) => {
         try {
             if(compte !== null && (compte.type === 'ADMIN' || compte.type === 'ENTREPRISE')){
-                if(data.file.length > 0){
-                  await CompteService.UpdateOneContent(data.titre,data.description,data.type, data.content_id, data.file[0]);
-                  /*history.push('/adminEntreprise/AllContenu');
-                  window.location.reload();*/
-                  console.log(data)
-                }
+                  const fichier = data.file[0] === undefined ? null : data.file[0];
+                  await CompteService.UpdateOneContent(data.titre,data.description,data.type, data.content_id, fichier);
+                  history.push('/adminEntreprise/AllContenu');
+                  window.location.reload();
             }else{
                 setErreur(true);
                 setErrorMessage("Echec à la modification du contenu");
@@ -115,12 +122,12 @@ export default function CardEditContenu() {
                       name="type"
                       {...register('type')}
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      
+                      onChange={(e) => onChangeTypeSelect(e)}
                     >
-                         <option value={contenu.type}  hidden>{contenu.type}</option>
-                         <option key="1" value="galerie"> galerie</option>
-                         <option key="2" value="emploi">offre d'emploi</option>
-                         <option key="3" value="information">information</option>
+                         <option key="1" value={contenu.type}  hidden>{contenu.type}</option>
+                         <option key="2" value="galerie"> galerie</option>
+                         <option key="3" value="emploi">offre d'emploi</option>
+                         <option key="4" value="information">information</option>
                     </select>
                     <p className="text-red-500 italic">{errors.type?.message}</p>
                   </div>
@@ -131,7 +138,7 @@ export default function CardEditContenu() {
                       className="block  text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="inpDescription"
                     >
-                      Description   <span className="lowercase">(*à remplir si le type n'est pas galerie*)</span>
+                      Description   <span className="lowercase">(*à remplir si le type n'est pas galerie s'il vous plaît*)</span>
                     </label>
                     <input
                       type="text"
@@ -141,8 +148,8 @@ export default function CardEditContenu() {
                       id="inpDescription"
                       style={{height: '100px'}}
                       className="border-0 px-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      disabled={isDisabled}
                     />
-                    <p className="text-red-500 italic">{errors.description?.message}</p>
                   </div>
                 </div>
               </div>
