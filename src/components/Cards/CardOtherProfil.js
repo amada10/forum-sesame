@@ -1,9 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router";
 
 export default function CardOtherProfil() {
-  // const {id} = useParams();
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-16">
@@ -16,21 +13,6 @@ export default function CardOtherProfil() {
                   src={require("assets/img/logodefaut.png").default}
                   className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
                 />
-              </div>
-            </div>
-            <div className="w-8/12 lg:w-4/12 opx-4 text-right lg:order-3">
-              <div className="py-6 px-3 sm:mt-0" style={{marginLeft: '70px'}}>
-                <Link
-                    to="/adminEntreprise/CardEditProfile/"
-                    className="text-blueGray-700 text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
-                  >
-                    <button
-                    className="bg-teal-500 active:bg-lightBlue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                  >
-                    Modifier
-                  </button>
-                </Link>
               </div>
             </div>
             <div className="w-6/12 px-4 text-center mt-0">
