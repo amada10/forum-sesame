@@ -12,4 +12,15 @@
 .image-size{
     width: 130px;
     height: 130px;
+    border-radius: 60px;
+}
+
+/*style pour modification photo profil card profil*/
+
+#imageprofil { 
+    margin: 10px 0px;
+}
+
+.sauvegarde {
+    margin: 0px 80px;
 }

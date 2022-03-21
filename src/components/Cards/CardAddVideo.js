@@ -1,5 +1,6 @@
 import React, {useState, useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from 'yup';
 import {useHistory} from "react-router";
@@ -10,40 +11,43 @@ import { LoginService } from "utils/service/LoginService";
 import { CompteContext } from "utils/contexte/CompteContext";
 
 
-export default function CardEditPassword() {
+export default function CardAddVideo() {
   const {compte} = useContext(CompteContext);
   const compteCurrent = LoginService.getOneCompteContexte(compte);
 
   const [erreur,setErreur]=useState(false);
   const [errorMesssage,setErrorMessage]=useState("");
 
-  const [pass, setPass] = useState("");
+  const [hiddenLien, setHiddenLien] = useState(false);
+  const [hiddenFile, setHiddenFile] = useState(false);
 
-  const firstP = (premier) => {
-    let valeur = premier.target.value;
-    setPass(valeur);
+  //fonction pour controller le choix de l'user
+  function HiddenFile(e){
+    let valeur = e.target.value;
+    if(valeur.length > 0){
+      setHiddenFile(true);
+    } else {
+      setHiddenFile(false)
+    }
   }
-  const secondP = (second) => {
-    let valeur = second.target.value;
-    if(valeur !== pass){
-      setErreur(true);
-      setErrorMessage("Confirmation et nouveau mot de passe doit être les mêmes!")
+  function HiddenLien(e){
+    let valeur = e.target.value;
+    if(valeur.length > 0){
+      setHiddenLien(true);
     } else{
-      setErreur(false);
+      setHiddenLien(false);
     }
   }
 
   let history = useHistory();
 
   const validationPassword = Yup.object().shape({
-      old_password: Yup.string()
-          .required('Ce champ est obligatoire')
-          .min(6, 'Password doit être au minimum 6 characters')
-          .max(40, 'Password ne doit pas dépasser les 40 characters'),
-      new_password: Yup.string()
-          .required('Ce champ est obligatoire')
-          .min(6, 'Password doit être au minimum 6 characters')
-          .max(40, 'Password ne doit pas dépasser les 40 characters'),
+      lien: Yup.string()
+        .nullable(true)
+        .notRequired(),
+      video: Yup.mixed()
+        .nullable()
+        .notRequired(),
    });
 
   const {
@@ -54,15 +58,15 @@ export default function CardEditPassword() {
     resolver: yupResolver(validationPassword)
   });
 
-  const  handleEditPassword = async(data) => {
+  const  handleAddVideo = async(data) => {
         try {
             if(compte !== null){
-                await CompteService.UpdatePassword(data.old_password, data.new_password)
+               /* await CompteService.AddVideo(data.lien, data.video)
                 history.push('/adminEntreprise/ProfilEntreprise');
-                window.location.reload();
+                window.location.reload();*/
             }else{
                 setErreur(true);
-                setErrorMessage("Echec à la modification");
+                setErrorMessage("Echec à l'ajout de la vidéo");
             }
         } catch (error) {
             setErreur(true);
@@ -73,82 +77,62 @@ export default function CardEditPassword() {
   return (
     <>
       <div className="relative mt-4 flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
-        <form onSubmit={handleSubmit(handleEditPassword)}>
+        <form onSubmit={handleSubmit(handleAddVideo)}>
           <div className="rounded-t bg-white mb-0 px-6 py-6">
             <div className="text-center flex justify-between">
-              <h6 className="text-blueGray-700 text-xl font-bold">Modifier mot de passe</h6>
+              <h6 className="text-blueGray-700 text-xl font-bold">Ajouter votre vidéo de présentation</h6>
               <input 
                 className="bg-teal-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                 type="submit"              
-                value="Sauvegarder"
+                value="Ajouter"
               />
             </div>
           </div>
-          {
-            compteCurrent.map((compte) => (
-              <div className="flex-auto px-4 lg:px-10 py-10 pt-0" key={compte.id}>
+
+
                 <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+                  Vidéo de presentation  (*Vous pouvez insérer soit par fichier soit via lien facebook*)
                 </h6>
                 <div className="flex flex-wrap">
-                  <div className="w-full lg:w-12/12 px-4">
+                  <div className="w-full lg:w-6/12 px-4" hidden={hiddenLien}>
                     <div className="relative w-full mb-3">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                         htmlFor="grid-password"
                       >
-                        Ancien mot de passe
+                        Video via lien facebook
                       </label>
                       <input
-                        type="password"
-                        name="password"
+                        type="url"
+                        name="lien"
                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Ancien mot de passe"
-                        {...register('old_password')}
-                    />
-                    <p className="text-red-500 italic">{errors.old_password?.message}</p>
+                        {...register('lien')}
+                        placeholder="Lien vers le video sur facebook..."
+                        onChange={(e) => HiddenFile(e)}
+                      />
                     </div>
                   </div>
-                  <div className="w-full lg:w-6/12 px-4">
+
+                   <div className="w-full lg:w-6/12 px-4" hidden={hiddenFile}>
                     <div className="relative w-full mb-3">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                         htmlFor="grid-password"
                       >
-                        Nouveau mot de passe
+                        Video via fichier (*.mp4 et inférieur à 25 Mb*)
                       </label>
                       <input
-                        type="password"
-                        name="passwordNouveau"
+                        type="file"
+                        name="fileVideo"
+                        accept="video/mp4"
                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Nouveau mot de passe"
-                        onChange={(premier) => firstP(premier)}
-                    />
-                      <p className="text-red-500 italic">{errors.password?.message}</p>
-                    </div>
-                  </div>
-                  <div className="w-full lg:w-6/12 px-4">
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="grid-password"
-                      >
-                        Confirm mot de passe
-                      </label>
-                      <input
-                        type="password"
-                        name="new_password"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Nouveau mot de passe"
-                        {...register('new_password')}
-                        onChange={(second) => secondP(second)}
-                    />
-                      <p className="text-red-500 italic">{errors.password?.message}</p>
+                        {...register('video')}
+                        onChange={(e) => HiddenLien(e)}
+                      />
+                      <p className="text-red-500 italic">{errors.lienf?.message}</p>
                     </div>
                   </div>
                 </div>
-            </div>
-            ))
-          }
         </form>
         {erreur &&(
                   <div className="bg-rose-300 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">

@@ -16,28 +16,7 @@ export default function CardEditProfile() {
 
   const [erreur,setErreur]=useState(false);
   const [errorMesssage,setErrorMessage]=useState("");
-
-  const [hiddenLien, setHiddenLien] = useState(false);
-  const [hiddenFile, setHiddenFile] = useState(false);
-
-  //fonction pour controller le choix de l'user
-  function HiddenFile(e){
-    let valeur = e.target.value;
-    if(valeur.length > 0){
-      setHiddenFile(true);
-    } else {
-      setHiddenFile(false)
-    }
-  }
-  function HiddenLien(e){
-    let valeur = e.target.value;
-    if(valeur.length > 0){
-      setHiddenLien(true);
-    } else{
-      setHiddenLien(false);
-    }
-  }
- 
+  
   let history = useHistory();
 
   const validationSchema = Yup.object().shape({
@@ -50,21 +29,13 @@ export default function CardEditProfile() {
           .required('Ce champ est obligatoire'),
         domaine: Yup.string()
           .required('le choix est obligatoire'),
-        lien: Yup.string()
-          .required('Ce champ est obligatoire'),
+        description: Yup.string()
+          .required('Ce champ est obligatoire')
+          .max(600, "Limité à 97 mots"),
         adresse:Yup.string()
         .required("Ce champ est obligatoire"),
-        description: Yup.string()
+        lien: Yup.string()
           .required('Ce champ est obligatoire'), 
-        lienf: Yup.string()
-          .nullable(true)
-          .notRequired(),
-        lienv: Yup.mixed()
-          .nullable(true)
-          .notRequired(),
-        logo: Yup.mixed()
-          .nullable(true)
-          .notRequired(),
   });
 
   const {
@@ -78,7 +49,7 @@ export default function CardEditProfile() {
   const  handleEditAccount = async(data) => {
         try {
             if(compte !== null){
-                await CompteService.UpdateCompte(data.nom,data.email,data.tel,data.domaine,data.lien, data.adresse, data.description, data.lienf, data.lienv, data.logo)
+                await CompteService.UpdateCompte(data.nom,data.email,data.tel,data.domaine,data.description, data.adresse, data.lien)
                 history.push('/adminEntreprise/ProfilEntreprise');
                 window.location.reload();
             }else{
@@ -94,7 +65,7 @@ export default function CardEditProfile() {
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
-        <form onSubmit={handleSubmit(handleEditAccount)}>
+        <form onSubmit={handleSubmit(handleEditAccount)}   style={{margin: '0px 0px 100px 0px'}}>
           <div className="rounded-t bg-white mb-0 px-6 py-6">
             <div className="text-center flex justify-between">
               <h6 className="text-blueGray-700 text-xl font-bold">Modifier compte</h6>
@@ -176,25 +147,8 @@ export default function CardEditProfile() {
                       <p className="text-red-500 italic">{errors.adresse?.message}</p>
                     </div>
                   </div>
-                  <div className="w-full lg:w-6/12 px-4">
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="grid-password"
-                      >
-                        Votre logo
-                      </label>
-                      <input
-                        type="file"
-                        name="logo"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Logo de votre entreprise.."
-                        {...register('logo')}
-                      />
-                    </div>
-                  </div>
 
-                  <div className="w-full lg:w-12/12 px-4">
+                  <div className="w-full lg:w-6/12 px-4">
                     <div className="relative w-full mb-3">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -277,52 +231,6 @@ export default function CardEditProfile() {
                         {...register('email')}
                       />
                       <p className="text-red-500 italic">{errors.email?.message}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <hr className="mt-6 border-b-1 border-blueGray-300" />
-
-                <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-                  Vidéo de presentation  (*Vous pouvez insérer soit par fichier soit via lien facebook*)
-                </h6>
-                <div className="flex flex-wrap">
-                  <div className="w-full lg:w-6/12 px-4" hidden={hiddenLien}>
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="grid-password"
-                      >
-                        Video via lien facebook
-                      </label>
-                      <input
-                        type="url"
-                        name="lien"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        {...register('lienf')}
-                        placeholder="Lien vers le video sur facebook..."
-                        onChange={(e) => HiddenFile(e)}
-                      />
-                    </div>
-                  </div>
-
-                   <div className="w-full lg:w-6/12 px-4" hidden={hiddenFile}>
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="grid-password"
-                      >
-                        Video via fichier (*.mp4 et inférieur à 25 Mb*)
-                      </label>
-                      <input
-                        type="file"
-                        name="fileVideo"
-                        accept="video/mp4"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        {...register('lienv')}
-                        onChange={(e) => HiddenLien(e)}
-                      />
-                      <p className="text-red-500 italic">{errors.lienf?.message}</p>
                     </div>
                   </div>
                 </div>

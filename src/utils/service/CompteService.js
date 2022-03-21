@@ -21,13 +21,13 @@ class CompteService{
         }
         )
     }
-    AddContenu(titre, description, type, file){
+    AddContenu(titre, description, type, link){
         var content = new FormData();
 
         content.append("titre", titre);
         content.append("description", description);
         content.append("type", type);
-        content.append("file", file);
+        content.append("file", link);
 
         return RouteAxios.post('/add_content', content,{
             headers: {
@@ -133,26 +133,23 @@ class CompteService{
 
             /*UPDATE SERVICE*/
 
-    UpdateCompte(nom, email, tel, domaine, lien, adresse, description, lienf, lienv, logo){
-        var content = new FormData();
-
-        content.append("nom", nom);
-        content.append("email", email);
-        content.append("tel", tel);
-        content.append("domaine", domaine);
-        content.append("lien", lien);
-        content.append("adresse", adresse);
-        content.append("description", description);
-        content.append("lienf", lienf);
-        content.append("lienv", lienv);
-        content.append("logo", logo);
-
-        return RouteAxios.patch('/update_account', content,{
+    UpdateCompte(nom, email, tel, domaine, description, adresse, lien){
+        return RouteAxios.patch('/update_account', {
+            nom, 
+            email, 
+            tel, 
+            domaine, 
+            description, 
+            adresse,
+            lien
+        }, {
             headers: {
                 'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`,
                 'Content-Type': 'application/json'
             }
-        })
+        }
+        )
+
     }
 
     UpdateFicheMetier(titre, domaine_id, fiche_metier_id, file){
@@ -180,6 +177,31 @@ class CompteService{
         content.append("file", file);
 
         return RouteAxios.patch('/update_content', content,{
+            headers: {
+                'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
+            }
+        })
+    }
+
+    UpdatePassword(old_password, new_password){
+        return RouteAxios.patch('/change_password', {
+            old_password,
+            new_password
+        }, {
+            headers: {
+                'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`,
+                'Content-Type': 'application/json'
+            }
+        }
+        )
+    }
+
+    UpdateLogo(logo){
+        var content = new FormData();
+
+        content.append("logo", logo);
+
+        return RouteAxios.patch('/update_logo', content,{
             headers: {
                 'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
             }

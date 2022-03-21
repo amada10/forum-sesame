@@ -83,7 +83,6 @@ export default function CardEditFiche() {
                   await CompteService.UpdateFicheMetier(data.titre, data.domaine_id, data.fiche_metier_id , fichier);
                   history.push('/admin/AllFicheMetier');
                   window.location.reload();
-                  console.log(data)
             }else{
                 setErreur(true);
                 setErrorMessage("Echec à la modification du fiche métier");
@@ -176,8 +175,7 @@ export default function CardEditFiche() {
                           type="file"
                           {...register('file')}
                           accept="image/jpeg, image/jpg, image/png, .pdf, video/*"
-                          className="transition ease-in-out
-                                  bg-white bg-clip-padding border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          className="transition ease-in-out bg-white bg-clip-padding border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         />
                         <p className="text-red-500 italic">{errors.file?.message}</p>
                       </div>
