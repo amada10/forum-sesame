@@ -1,5 +1,4 @@
-import React, {useContext, useState } from "react";
-import { useHistory } from "react-router";
+import React, {useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -48,11 +47,9 @@ function DomaineName({domaine_id}){
   }
 
 export default function CardAllFiche({color}) {
-  const {fiche} = useContext(CompteContext); //fiche still obj
+  const {fiche, setFiche} = useContext(CompteContext); //fiche still array
   const [domaine, setDomaine] = useState(0);
-  const allFiche = LoginService.convertItemToArray(fiche);
-  const ficheParDomaine = LoginService.getFichePerDomaine(allFiche, domaine);
-
+  const ficheParDomaine = LoginService.getFichePerDomaine(fiche, domaine);
   const [termSearch, setTermSearch] = useState("");
 
   const choixDomaine = (e) => {
@@ -60,18 +57,20 @@ export default function CardAllFiche({color}) {
      return setDomaine(domCheck);
   }
 
-  const history = useHistory();
 
   async function deleteFiche(id_fiche){
     await CompteService.DeleteFicheMetier(id_fiche);
-      history.push("/admin/AllFicheMetier");
-      window.location.reload();
+    setFiche(fiche.filter((fiches) => {
+      return fiches.id !== id_fiche;
+    }))
   }
   
   const recherche = (e) => {
     let valeur = e.target.value;
     setTermSearch(valeur);
 }
+useEffect(() => {
+    }, [fiche]);
 
   return (
     <>

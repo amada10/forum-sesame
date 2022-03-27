@@ -7,8 +7,7 @@ import { CompteContext } from "utils/contexte/CompteContext";
 export default function AllContenu() {
   const {contenus} = useContext(CompteContext);
   const [type, setType] = useState("");
-  const allContenus = LoginService.convertItemToArray(contenus);
-  const contenuParDomaine = LoginService.getContenuPerDomaine(allContenus, type);
+  const contenuParDomaine = LoginService.getContenuPerDomaine(contenus, type);
 
   const [termSearch, setTermSearch] = useState("");
 
@@ -47,11 +46,12 @@ export default function AllContenu() {
                   <option  hidden>Trier par domaine</option>
                   <option key="1" value="galerie">Galerie</option>
                   <option key="2" value="emploi">Offre d'emploi</option>
-                  <option key="3" value="information">Informations</option>
+                  <option key="3" value="formation">Formation</option>
+                  <option key="4" value="actu">Actualité</option>
              </select>
         </div>
         <div className="flex flex-wrap">
-            <CardAllContenu allContenu={contenuParDomaine} termSearch={termSearch}/>
+            <CardAllContenu contenu={contenus} allContenu={contenuParDomaine} termSearch={termSearch}/>
         </div>
       </div>
     </>

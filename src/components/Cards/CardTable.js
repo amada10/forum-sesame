@@ -7,17 +7,28 @@ import CompteService from "utils/service/CompteService";
 import { LoginService } from "utils/service/LoginService";
 import {uRI} from "utils/urlAxios/UrlAxios";
 
+//style css
+import '../../assets/styles/cardStyle.css';
+
 export default function CardTable({ color}) {
-  const {compte} = useContext(CompteContext);
+  const {compte, setCompte} = useContext(CompteContext);
   const [domaine, setDomaine] = useState("");
-  const allCompte = LoginService.convertItemToArray(compte);
-  const compteParDomaine = LoginService.getComptePerDomaine(allCompte, domaine);
+  const idCompteCurrent = LoginService.getCurrentCompte().id;
+  const compteParDomaine = LoginService.getComptePerDomaine(compte, domaine);
 
   const [termSearch, setTermSearch] = useState("");
 
-  async function deleteOneCompte(id){
-    await CompteService.DeleteOneCompte(id);
-      window.location.reload();
+  const [showAlert, setShowAlert] = useState(false);
+
+   function deleteOneCompte(id){
+    CompteService.DeleteOneCompte(id);
+    setCompte(compte.filter((cmpt) => {
+      return cmpt.id !== id;
+    }))
+    setShowAlert(true)
+    setTimeout(() => {
+      setShowAlert(false)
+    }, 5000);
   }
   const choixDomaine = (e) => {
     let domCheck = e.target.value;
@@ -28,7 +39,6 @@ const recherche = (e) => {
   let valeur = e.target.value;
   setTermSearch(valeur);
 }
-
   return (
     <>
       <div
@@ -37,6 +47,28 @@ const recherche = (e) => {
           (color === "light" ? "bg-white" : "bg-lightBlue-900 text-white")
         }
       >
+        {/**Popup alert */}
+        {showAlert ? (
+           <div
+              className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500 popup"
+            >
+                <span className="text-xl inline-block mr-5 align-middle mr-2">
+                  <i className="fas fa-bell" />
+                </span>
+                <span className="inline-block align-middle mr-8 ">
+                  <b className="capitalize "> </b> Le compte a été supprimé
+                </span>
+                <button
+                  className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-4 outline-none focus:outline-none"
+                  onClick={() => setShowAlert(false)}
+                >
+                  <span>×</span>
+              </button>
+            </div> 
+      ) : null}
+
+
+
         <div className="rounded-t mb-0 px-4 py-3 border-0">
           <div className="flex flex-wrap items-center">
             <div className="relative w-full sm:text-center px-4 max-w-full flex-grow flex-1">
@@ -148,13 +180,15 @@ const recherche = (e) => {
                                           Voir profil
                                         </button>
                                   </Link>
-                                  <button
-                                      className="bg-lightBlue-800  text-white active:bg-teal-500 font-bold  text-xs px-2 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-                                      type="button"
-                                      onClick={() => deleteOneCompte(account.id)}
-                                  >
-                                    Delete
-                                  </button>
+                                  {account.id !== idCompteCurrent && (
+                                    <button
+                                        className="bg-lightBlue-800  text-white active:bg-teal-500 font-bold  text-xs px-2 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                                        type="button"
+                                        onClick={() => deleteOneCompte(account.id)}
+                                    >
+                                      Delete
+                                    </button>
+                                  )}
                                 </td>
                           </tr>
                      ))

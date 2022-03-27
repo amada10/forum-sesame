@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState ,useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from 'yup';
@@ -7,11 +7,13 @@ import {useHistory} from "react-router";
 // components
 import CompteService from "utils/service/CompteService";
 import { LoginService } from "utils/service/LoginService";
+import { CompteContext } from "utils/contexte/CompteContext";
 
 export default function CardAddFicheMetier() {
   const compte = LoginService.getCurrentCompte();
   const [erreur, setErreur] = useState(false);
   const [errorMesssage,setErrorMessage]=useState("");
+  const {fiche, setFiche, addFiche,}=useContext(CompteContext)
 
   let history = useHistory();
 
@@ -38,17 +40,27 @@ export default function CardAddFicheMetier() {
       });
 
       const  handleAddFiche = async(data) => {
-        try {
+        try { 
+            let newFiche = {}
+            const res  = await CompteService.AddFicheMetier(data.titre, data.domaine_id, data.file[0]);
+            let formdata = res.config.data;
+            formdata.delete('file')
+            for(let value of formdata.entries()){
+                newFiche[value[0]] = value[1];
+            }
+
             if(compte !== null && compte.type === 'ADMIN'){
                 if(data.file.length > 0){
-                  await CompteService.AddFicheMetier(data.titre, data.domaine_id, data.file[0]);
                   history.push('/admin/AllFicheMetier');
-                  window.location.reload();
                 }
             }else{
                 setErreur(true);
                 setErrorMessage("Echec à l'ajout du nouveau fiche métier");
             }
+            
+             newFiche['id'] = res.data.id;
+            setFiche([...fiche, newFiche]);
+            addFiche(newFiche);
         } catch (error) {
             setErreur(true)
             setErrorMessage(error.response.data.message)

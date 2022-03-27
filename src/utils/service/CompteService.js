@@ -55,8 +55,6 @@ class CompteService{
                 headers: {
                     'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
                 }
-        }).then(response =>{
-            return response;
         })
     }
 
@@ -65,8 +63,6 @@ class CompteService{
                 headers: {
                     'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
                 }
-        }).then(response =>{
-            return response;
         })
     }
 
@@ -75,8 +71,6 @@ class CompteService{
             headers: {
                     'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
             }
-        }).then(response => {
-            return response;
         })
     }
 
@@ -85,8 +79,6 @@ class CompteService{
             headers: {
                     'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
             }
-        }).then(response => {
-            return response;
         })
     }
 
@@ -202,6 +194,26 @@ class CompteService{
         content.append("logo", logo);
 
         return RouteAxios.patch('/update_logo', content,{
+            headers: {
+                'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
+            }
+        })
+    }
+
+    UpdateVideo(lien, fileVideo){
+        var content = new FormData();
+        let video = null;
+        if(lien !== "" ){
+            video = lien;
+        } else {
+            if(fileVideo.size < 25000000){
+                video = fileVideo
+            }
+        }
+
+        content.append("video", video);
+
+        return RouteAxios.patch('/update_video', content,{
             headers: {
                 'Authorization': `Bearer ${LoginService.getCurrentCompte().token}`
             }
